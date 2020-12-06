@@ -1,0 +1,24 @@
+{
+  "name": "web-voice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "SEBackgroundESM.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "electron ./SETestBackgroundESM.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "collections": "file:../../libraries/js/collections",
+    "compositor": "file:../../libraries/js/compositor",
+    "electron": "^12.0.0-beta.6",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "math": "file:../../libraries/js/math",
+    "network-js": "file:../network-js",
+    "socket.io": "^3.0.3",
+    "socket.io-client": "^3.0.3"
+  }
+}
