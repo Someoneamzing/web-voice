@@ -16,9 +16,10 @@ function createWindow () {
   mainWindow.loadFile('SEClient.html')
 
   mainWindow.on('ready-to-show', ()=>{
-    mainWindow.webContents.send('strengths', [['Player1', 0.9], ['Player2', 0.8], ['Player3', 0.7], ['Player4', 0.2]]);
     mainWindow.webContents.send('steam-id', process.argv[2]);
-
+    setInterval(()=>{
+        mainWindow.webContents.send('strengths', [['Player1', 0.9], ['Player2', 0.8], ['Player3', 0.7], ['Player4', 0.2]]);
+    }, 100);
   })
 
   // Open the DevTools.

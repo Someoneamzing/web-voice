@@ -130,6 +130,9 @@ ipcRenderer.on('steam-id', (event, id)=>{
 ipcRenderer.on('strengths', (event, strengths)=>{
     strengthPara.innerText = strengths.map(e=>e.join(': ')).join(', ')
     for (let [id, strength] of strengths) {
-        if (players.has(id)) if (players.get(id).filterNode) players.get(id).filterNode.parameters.get('signalStrength').value = strength;
+        if (players.has(id)) if (players.get(id).filterNode) {
+            players.get(id).filterNode.parameters.get('signalStrength').value = strength;
+            console.log(id, strength);
+        }
     }
 });

@@ -11,13 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "collections": "file:../../libraries/js/collections",
-    "compositor": "file:../../libraries/js/compositor",
     "electron": "^12.0.0-beta.6",
     "esm": "^3.2.25",
     "express": "^4.17.1",
-    "math": "file:../../libraries/js/math",
-    "network-js": "file:../network-js",
+    "math": "https://github.com/Someoneamzing/math.git",
+    "network-js": "https://github.com/Someoneamzing/network-js.git",
     "socket.io": "^3.0.3",
     "socket.io-client": "^3.0.3"
   }
