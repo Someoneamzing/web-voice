@@ -26,6 +26,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('disconnect', ()=>{
+        socket.broadcast.emit('player-disconnect', socket.steamID);
         players.delete(socket.steamID);
     })
 })

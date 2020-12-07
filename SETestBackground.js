@@ -18,7 +18,14 @@ function createWindow () {
   mainWindow.on('ready-to-show', ()=>{
     mainWindow.webContents.send('steam-id', process.argv[2]);
     setInterval(()=>{
-        mainWindow.webContents.send('strengths', [['Player1', 0.9], ['Player2', 0.8], ['Player3', 0.7], ['Player4', 0.2]]);
+        mainWindow.webContents.send('strengths',
+        [['Player1', 0.9], ['Player2', 0.8], ['Player3', 0.7], ['Player4', 0.2]],
+        [
+          {id: 'Player1', name: 'Player 1'},
+          {id: 'Player2', name: 'Player 2'},
+          {id: 'Player3', name: 'Player 3'},
+          {id: 'Player4', name: 'Player 4'}
+        ]);
     }, 100);
   })
 

@@ -229,6 +229,17 @@ server.on('players', (ws, data)=>{
                 NetworkNode.connect(antenna, player);
             }
         }
+        
+    }
+
+    
+    let myPlayer = playerMap.get(me);
+
+    for (let player of players) {
+        let dist = player.position.distance2(myPlayer.position);
+        if (dist < 200 ** 2) {
+            strengths.set(player.id, Math.max(strengths.get(player.id), Math.sqrt(200 ** 2 - dist) / 200))
+        }
         if (player.id != me) strengths.set(player.id, Math.max(strengths.get(player.id), walkConnections(player, me))) 
     }
 
@@ -239,5 +250,5 @@ server.on('players', (ws, data)=>{
     //     // console.log(`${("" + playerMap.get(id).name).padStart(30, ' ')}: ${strength}`);
     // }
 
-    mainWindow.webContents.send('strengths', [...strengths.entries()]);
+    mainWindow.webContents.send('strengths', [...strengths.entries()], players);
 })

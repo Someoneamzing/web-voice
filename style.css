@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#callList {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+.call-entry {
+    padding: 1em;
+    display: flex;
+    align-items: center;
+}
+
+.strength-indicator {
+    height: 1em;
+    position: relative;
+    /* clip-path: polygon(0% 100%, 100% 0%, 100% 100%); */
+    background-color: lime;
+    display: block;
+    width: 1em;
+    clip-path: polygon(0% 100%, 100% 0%, 100% 100%);
+    margin-left: .5em;
+
+}
+
+.strength-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    height: 100%;
+    background-color: inherit;
+}

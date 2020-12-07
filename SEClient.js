@@ -1,5 +1,8 @@
 const {ipcRenderer} = require('electron');
 const io = require('socket.io-client');
+const chroma = require('chroma-js');
+
+const strengthGradient = chroma.scale(['red', 'yellow', 'lime'])
 
 const players = new Map();
 //{urls: "stun:stun1.l.google.com:19302"}
@@ -50,7 +53,14 @@ function reconnect(url) {
         const a = new Audio();
         a.muted = true;
         a.srcObject = stream;
-        
+        const callElem = document.createElement('div');
+        callElem.classList.add('call-entry')
+        callElem.innerHTML = `<span class="player-name"></span><span class="strength-indicator"><span class="strength-fill"></span></span>`;
+        player.callElem = callElem;
+        player.nameElement = callElem.querySelector('.player-name');
+        player.strengthIndicator = callElem.querySelector('.strength-indicator');
+        player.strengthFill = callElem.querySelector('.strength-fill');
+        callList.append(callElem);
 
         peerConnection.addEventListener('icecandidate', (event)=>{
             console.log("local canddiate");
@@ -118,6 +128,12 @@ function reconnect(url) {
         console.log('ice-candidate');
         await players.get(id).peerConnection.addIceCandidate(JSON.parse(candidate));
     })
+
+    client.on('player-disconnect', (id)=>{
+        const player = players.get(id);
+        player.callElem.remove();
+        players.delete(id);
+    })
 }
 
 ipcRenderer.on('steam-id', (event, id)=>{
@@ -127,12 +143,26 @@ ipcRenderer.on('steam-id', (event, id)=>{
     if (needsSend && client) client.emit('steam-id', SteamID);
 });
 
-ipcRenderer.on('strengths', (event, strengths)=>{
-    strengthPara.innerText = strengths.map(e=>e.join(': ')).join(', ')
+ipcRenderer.on('strengths', (event, strengthArray, playerList)=>{
+    let strengths = new Map(strengthArray);
+    // strengthPara.innerText = strengths.map(e=>e.join(': ')).join(', ')
     for (let [id, strength] of strengths) {
-        if (players.has(id)) if (players.get(id).filterNode) {
-            players.get(id).filterNode.parameters.get('signalStrength').value = strength;
-            console.log(id, strength);
+        if (players.has(id)) {
+            if (players.get(id).filterNode) {
+                players.get(id).filterNode.parameters.get('signalStrength').value = strength;
+                console.log(id, strength);
+            }
+        }
+    }
+    playerList = Array.from(playerList);
+    for (let player of playerList) {
+        if (players.has(player.id)) {
+            const {nameElement, strengthIndicator, strengthFill} = players.get(player.id)
+            nameElement.innerText = player.name;
+            let color = strengthGradient(strengths.get(player.id));
+            strengthFill.style.width = (strengths.get(player.id) * 100) + '%';
+            strengthIndicator.style.backgroundColor = color.darken()
+            strengthFill.style.backgroundColor = color;
         }
     }
 });
